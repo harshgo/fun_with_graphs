@@ -63,6 +63,13 @@ int64 Graph::AddNode() {
   return id_counter;
 }
 
+int64 Graph::AddNode(int64 id) {
+  if(!Contains(id)) {
+    nodemap.insert({id, Node()});
+  }
+  return id;
+}
+
 int64 Graph::Count() {
   // an invariant we mantain is that number of actual nodes == number of nodes in the map
   return nodemap.size();
@@ -146,22 +153,21 @@ std::vector<int64> Graph::ShortestPath(int64 from, int64 to) {
   // a queue to visit the nodes in the right order
   std::queue<int64> q;
   q.push(from);
-  // we have visited the start node
-  visited.insert(from);
   // while the queue is not empty...
   while(!q.empty()) {
     // get the most current element...
     int64 current = q.front();
+    visited.insert(current);
     q.pop();
     // if we have reached the destination, we are done
     if(current == to) break;
     // else, we add all our neighbors to the queue
-    Node currNode = nodemap.at(from);
+    Node currNode = nodemap.at(current);
     for(int64 neighbor : *currNode.outgoing) {
       // do not need to do anything if the neighbor has been visited before
       if(visited.find(neighbor) == visited.end()) {
-        visited.insert(neighbor);
         backpointers.insert({neighbor, current});
+        q.push(neighbor);
       }
     }
   }

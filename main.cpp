@@ -76,14 +76,25 @@ TEST_CASE( "Testing add/delete", "[AddDelete]" ) {
 }
 
 std::unique_ptr<Graph> make_graph(std::string filepath) {
-  unique_ptr<Graph> result = std::make_unique<Graph>();
+  std::unique_ptr<Graph> result = std::make_unique<Graph>();
   std::ifstream input_file;
   input_file.open(filepath);
   int m;
+  input_file >> m;
   for(int i = 0; i < m; ++i) {
     int64 from, to;
     input_file >> from >> to;
-    if(!result.Connect(from)
+    result->AddNode(from); result->AddNode(to);
+    result->Connect(from, to);
   }
+  return result;
+}
+
+TEST_CASE( "checking shortest paths", "[shortestpath]" ) {
+  auto graph = make_graph("test1.txt");
+  for(int i = 1; i < 6; ++i) {
+    REQUIRE( graph->IsConnected(i, i+1) );
+  }
+  REQUIRE( graph->ShortestPath(1,6).size() == 6);
 }
 

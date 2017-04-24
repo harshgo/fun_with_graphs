@@ -4,7 +4,7 @@ my internship at Google.
 
 To run the (as for now bare-bones) tests, type
 ```
-make all
+make clean all
 ```
 Acknowledgments:
 Challenge written by https://github.com/iamnotnader

@@ -48,6 +48,10 @@ class Graph {
   // identifier for that node.
   int64 AddNode();
 
+  // Adds a new node to the graph with the specified id. if a node already
+  // exists with that id, does nothing
+  int64 AddNode(int64 id);
+
   // Returns the number of nodes in the graph.
   int64 Count();
 
